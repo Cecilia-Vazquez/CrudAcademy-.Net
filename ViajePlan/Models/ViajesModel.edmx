@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ViajesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Hoteles">
+          <Key>
+            <PropertyRef Name="IdHotel" />
+          </Key>
+          <Property Name="IdHotel" Type="int" Nullable="false" />
+          <Property Name="IdPlan" Type="int" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Precio" Type="int" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Planes">
+          <Key>
+            <PropertyRef Name="IdPlan" />
+          </Key>
+          <Property Name="IdPlan" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Lugar" Type="varchar" MaxLength="50" />
+          <Property Name="Disponibilidad" Type="int" />
+          <Property Name="Cupo" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Reservaciones">
+          <Key>
+            <PropertyRef Name="IdReservacion" />
+          </Key>
+          <Property Name="IdReservacion" Type="int" Nullable="false" />
+          <Property Name="IdHotel" Type="int" />
+          <Property Name="Cliente" Type="varchar" MaxLength="50" />
+          <Property Name="Correo" Type="varchar" MaxLength="50" />
+          <Property Name="Telefono" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_Hoteles_Planes">
+          <End Role="Planes" Type="Self.Planes" Multiplicity="1" />
+          <End Role="Hoteles" Type="Self.Hoteles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Planes">
+              <PropertyRef Name="IdPlan" />
+            </Principal>
+            <Dependent Role="Hoteles">
+              <PropertyRef Name="IdHotel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservaciones_Hoteles">
+          <End Role="Hoteles" Type="Self.Hoteles" Multiplicity="1" />
+          <End Role="Reservaciones" Type="Self.Reservaciones" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Hoteles">
+              <PropertyRef Name="IdHotel" />
+            </Principal>
+            <Dependent Role="Reservaciones">
+              <PropertyRef Name="IdReservacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ViajesModelStoreContainer">
+          <EntitySet Name="Hoteles" EntityType="Self.Hoteles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Planes" EntityType="Self.Planes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservaciones" EntityType="Self.Reservaciones" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Hoteles_Planes" Association="Self.FK_Hoteles_Planes">
+            <End Role="Planes" EntitySet="Planes" />
+            <End Role="Hoteles" EntitySet="Hoteles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservaciones_Hoteles" Association="Self.FK_Reservaciones_Hoteles">
+            <End Role="Hoteles" EntitySet="Hoteles" />
+            <End Role="Reservaciones" EntitySet="Reservaciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ViajesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Hoteles">
+          <Key>
+            <PropertyRef Name="IdHotel" />
+          </Key>
+          <Property Name="IdHotel" Type="Int32" Nullable="false" />
+          <Property Name="IdPlan" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Precio" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Planes" Relationship="Self.FK_Hoteles_Planes" FromRole="Hoteles" ToRole="Planes" />
+          <NavigationProperty Name="Reservaciones" Relationship="Self.FK_Reservaciones_Hoteles" FromRole="Hoteles" ToRole="Reservaciones" />
+        </EntityType>
+        <EntityType Name="Planes">
+          <Key>
+            <PropertyRef Name="IdPlan" />
+          </Key>
+          <Property Name="IdPlan" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lugar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Disponibilidad" Type="Int32" />
+          <Property Name="Cupo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Hoteles" Relationship="Self.FK_Hoteles_Planes" FromRole="Planes" ToRole="Hoteles" />
+        </EntityType>
+        <EntityType Name="Reservaciones">
+          <Key>
+            <PropertyRef Name="IdReservacion" />
+          </Key>
+          <Property Name="IdReservacion" Type="Int32" Nullable="false" />
+          <Property Name="IdHotel" Type="Int32" />
+          <Property Name="Cliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Hoteles" Relationship="Self.FK_Reservaciones_Hoteles" FromRole="Reservaciones" ToRole="Hoteles" />
+        </EntityType>
+        <Association Name="FK_Hoteles_Planes">
+          <End Role="Planes" Type="Self.Planes" Multiplicity="1" />
+          <End Role="Hoteles" Type="Self.Hoteles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Planes">
+              <PropertyRef Name="IdPlan" />
+            </Principal>
+            <Dependent Role="Hoteles">
+              <PropertyRef Name="IdHotel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservaciones_Hoteles">
+          <End Role="Hoteles" Type="Self.Hoteles" Multiplicity="1" />
+          <End Role="Reservaciones" Type="Self.Reservaciones" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Hoteles">
+              <PropertyRef Name="IdHotel" />
+            </Principal>
+            <Dependent Role="Reservaciones">
+              <PropertyRef Name="IdReservacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ViajesEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Hoteles" EntityType="Self.Hoteles" />
+          <EntitySet Name="Planes" EntityType="Self.Planes" />
+          <EntitySet Name="Reservaciones" EntityType="Self.Reservaciones" />
+          <AssociationSet Name="FK_Hoteles_Planes" Association="Self.FK_Hoteles_Planes">
+            <End Role="Planes" EntitySet="Planes" />
+            <End Role="Hoteles" EntitySet="Hoteles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservaciones_Hoteles" Association="Self.FK_Reservaciones_Hoteles">
+            <End Role="Hoteles" EntitySet="Hoteles" />
+            <End Role="Reservaciones" EntitySet="Reservaciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ViajesModelStoreContainer" CdmEntityContainer="ViajesEntities1">
+          <EntitySetMapping Name="Hoteles">
+            <EntityTypeMapping TypeName="ViajesModel.Hoteles">
+              <MappingFragment StoreEntitySet="Hoteles">
+                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+                <ScalarProperty Name="IdPlan" ColumnName="IdPlan" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Planes">
+            <EntityTypeMapping TypeName="ViajesModel.Planes">
+              <MappingFragment StoreEntitySet="Planes">
+                <ScalarProperty Name="IdPlan" ColumnName="IdPlan" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Lugar" ColumnName="Lugar" />
+                <ScalarProperty Name="Disponibilidad" ColumnName="Disponibilidad" />
+                <ScalarProperty Name="Cupo" ColumnName="Cupo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservaciones">
+            <EntityTypeMapping TypeName="ViajesModel.Reservaciones">
+              <MappingFragment StoreEntitySet="Reservaciones">
+                <ScalarProperty Name="IdReservacion" ColumnName="IdReservacion" />
+                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
